@@ -1,232 +1,161 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,50:161b22,100:1f6feb&height=200&section=header&text=Johann%20Moreno&fontSize=42&fontColor=f0f6fc&fontAlignY=35&desc=Frontend%20Engineer%20%C2%B7%20Building%20systems%20that%20ship&descSize=16&descColor=8b949e&descAlignY=55&animation=fadeIn" width="100%"/>
+# Johann Moreno
 
-<div align="center">
+**Frontend engineer.** I built an autonomous AI pipeline so I can focus on what I care about — the UI.
+
+I send a voice note or a text to Telegram. Minutes later, there's a React app running in Kubernetes. The infrastructure, the CI/CD, the boilerplate — all handled by agents I built. I just write frontend.
+
+---
+
+## The Pipeline
+
+Every app I ship goes through this system. Each component is a standalone TypeScript service running as a pod in my K8s cluster.
 
 ```
-Telegram message → AI agents discuss → repo created → deployed to K8s → app live
+ Voice / Text
+      │
+      ▼
+┌─────────────┐    ┌──────────────────┐    ┌─────────────┐    ┌──────────┐
+│   Alisios   │───▶│     ForgeBot     │───▶│     R2D2    │───▶│  ArgoCD  │──▶ Live App
+│  Telegram   │    │  Agent Civiliz.  │    │   DevOps    │    │  GitOps  │
+└─────────────┘    └──────────────────┘    └─────────────┘    └──────────┘
 ```
 
-**I build frontends.** To ship more of them, I automated everything else.
+### `alisios-bot` — Telegram → GitHub
 
-</div>
+The entry point. A Telegram bot that accepts text and **voice notes** (transcribed via OpenAI Whisper), detects deployment intent using GPT-4o mini, and triggers the pipeline with interactive confirmation.
 
----
-
-### What I ship
-
-I build user-facing applications — from productivity tools to games to data visualizations.  
-Here's a sample of what's live:
-
-<table>
-<tr>
-<td align="center" width="25%">
-
-**🎯 Epic Planner**<br/>
-<sub>Urban micro-planner for Barcelona. Pick a day, pick an area, get a legendary route with concerts, events & bars.</sub><br/>
-<sub><code>React</code> <code>Maps API</code></sub><br/>
-<a href="https://github.com/Johanson1988/epic-planner">repo</a> · <a href="https://github.com/Johanson1988/epic-planner-v2-react">v2</a>
-
-</td>
-<td align="center" width="25%">
-
-**🤿 Dive Computer**<br/>
-<sub>Nitrox calculator & dive computer niche app for scuba diving planning.</sub><br/>
-<sub><code>TypeScript</code> <code>React</code></sub><br/>
-<a href="https://github.com/Johanson1988/dive-computer-niche">repo</a>
-
-</td>
-<td align="center" width="25%">
-
-**🧠 Mente Digital**<br/>
-<sub>Custom Obsidian-like knowledge app with Telegram integration for capturing ideas on the go.</sub><br/>
-<sub><code>TypeScript</code> <code>Telegram API</code></sub><br/>
-<sub>private</sub>
-
-</td>
-<td align="center" width="25%">
-
-**🃏 Envite Canario**<br/>
-<sub>Online card game — the traditional Canarian "envite" with animations and multiplayer.</sub><br/>
-<sub><code>TypeScript</code> <code>React</code></sub><br/>
-<sub>private</sub>
-
-</td>
-</tr>
-<tr>
-<td align="center" width="25%">
-
-**🏋️ Healthy Habits**<br/>
-<sub>Micro-exercise routine app. Set reminders, track movement breaks throughout the day.</sub><br/>
-<sub><code>TypeScript</code> <code>Remix</code></sub><br/>
-<sub>private</sub>
-
-</td>
-<td align="center" width="25%">
-
-**🛸 OVNI Tenerife**<br/>
-<sub>UFO sightings map for Tenerife. Report and explore sightings on an interactive map.</sub><br/>
-<sub><code>TypeScript</code> <code>Maps</code></sub><br/>
-<sub>private</sub>
-
-</td>
-<td align="center" width="25%">
-
-**🏠 Casas Canarias**<br/>
-<sub>Showcase of traditional Canarian architecture with 3D models and historical data.</sub><br/>
-<sub><code>TypeScript</code> <code>React</code></sub><br/>
-<sub>private</sub>
-
-</td>
-<td align="center" width="25%">
-
-**🍲 Recetas Mamá**<br/>
-<sub>Family recipe manager — save, organize and share cooking links and notes.</sub><br/>
-<sub><code>TypeScript</code> <code>React</code></sub><br/>
-<sub>private</sub>
-
-</td>
-</tr>
-</table>
-
-<details>
-<summary><b>+ more shipped apps</b></summary>
-<br/>
-
-| App | What it does |
-|-----|-------------|
-| **Silbo Training** | Learn and practice Silbo Gomero (whistled language of the Canary Islands) |
-| **Mama Fit** | Exercise routines with tagging and tracking |
-| **Gestión Tareas Hogar** | Household task management |
-| **Inventario Comida** | Home food inventory tracker |
-| **Inventario Ropa** | Wardrobe inventory manager |
-| **Juego de las Sillas** | Musical chairs game for kids |
-| **CD Tenerife Data** | Stats & historical data for Club Deportivo Tenerife |
-| **Dalton Dive** | Nitrox/gas blending calculator for diving |
-| **App de Bienestar** | Office wellness reminder — move, stretch, breathe |
-
-</details>
-
-<br/>
-
-> **30+ TypeScript applications** shipped in the last year.  
-> That output is not accidental — it's engineered.
-
----
-
-### How I ship
-
-I built an autonomous pipeline that takes an idea from a Telegram message to a running app in Kubernetes — no manual DevOps, no boilerplate, no context switching away from the frontend.
-
-```mermaid
-graph LR
-    A["📱 Telegram"] -->|natural language| B["🌬️ Alisios"]
-    B -->|creates GitHub issue| C["🤖 ForgeBot"]
-    C -->|orchestrates| D["🧠 Agent Civilization"]
-    D -->|specs + code| E["⚙️ R2D2"]
-    E -->|repo + Docker + manifests| F["☸️ ArgoCD"]
-    F -->|GitOps sync| G["🚀 Live App"]
-    
-    style A fill:#0d1117,stroke:#1f6feb,color:#f0f6fc
-    style B fill:#0d1117,stroke:#1f6feb,color:#f0f6fc
-    style C fill:#0d1117,stroke:#1f6feb,color:#f0f6fc
-    style D fill:#0d1117,stroke:#1f6feb,color:#f0f6fc
-    style E fill:#0d1117,stroke:#1f6feb,color:#f0f6fc
-    style F fill:#0d1117,stroke:#1f6feb,color:#f0f6fc
-    style G fill:#0d1117,stroke:#1f6feb,color:#f0f6fc
+```
+You (voice): "Hazme una app para gestionar el inventario de comida"
+      │
+      ▼
+ [Whisper] → transcription → [GPT-4o mini] → intent extraction → deployment API call
 ```
 
-<table>
-<tr>
-<td width="50%">
+### `forge-bot` + `forge-agents` + `forge-comms` + `forge-memory` — Agent Civilization
 
-#### 🌬️ Alisios
+Before any code is written, AI agents with distinct roles **discuss the problem**:
 
-Telegram bot that bridges ideas to GitHub. Send a message describing what you want, and it creates a structured GitHub issue ready for agents to pick up.
+| Agent | Role | What it does |
+|-------|------|-------------|
+| **Product Owner** | Orchestrator | Runs first. Cites other agents, reviews their output, decides when specs are ready |
+| **Functional Analyst** | Requirements | Breaks down user stories, acceptance criteria, edge cases |
+| **UX Designer** | Interface | Proposes component structure, interaction patterns, responsive behavior |
+| **Senior React Dev** | Architecture | Defines technical approach, component tree, state management, data flow |
 
-`alisios-bot`
+The agents are **not GitHub Copilot agents** — they're custom prompts executed via OpenAI API, orchestrated by ForgeBot through GitHub Discussions. ForgeBot auto-approves and squash-merges PRs from `copilot/*` branches, cleans up, and logs everything.
 
-</td>
-<td width="50%">
+The civilization has **persistent memory** (`forge-memory`) and **inter-agent messaging** (`forge-comms`) — agents can reference past decisions across projects.
 
-#### 🤖 ForgeBot + Agent Civilization
+### `devops-agent-r2d2` — One API Call → Running App
 
-Multi-agent orchestration system. Agents with different roles (Product Owner, UX Designer, Functional Analyst, Senior Dev) discuss, debate, and converge on solutions — with persistent memory.
+R2D2 automates the full GitOps lifecycle with a single API call:
 
-`forge-bot` · `forge-agents` · `forge-comms` · `forge-memory`
+```
+POST /deploy
+{
+  "name": "my-app",
+  "type": "remix"    ← front | back | remix
+}
+```
 
-</td>
-</tr>
-<tr>
-<td width="50%">
+What happens behind the scenes:
 
-#### ⚙️ R2D2
+1. **Creates GitHub repo** from the right template
+2. **Injects CI/CD** — GitHub Actions workflow that builds Docker image → pushes to GHCR
+3. **Generates K8s manifests** — Deployment, Service, Ingress with TLS
+4. **Registers in ArgoCD** — app syncs automatically on every push
+5. **Configures secrets** — GitHub secrets + imagePullSecrets, all wired
+6. **Streams logs** via Server-Sent Events so Alisios can report progress back to Telegram
 
-DevOps agent that automates the entire deployment lifecycle: creates the GitHub repo, generates Dockerfile, builds K8s manifests, and registers the app in ArgoCD for continuous delivery.
+Three deployment types:
+- **`front`** — Static HTML + nginx
+- **`back`** — Node.js Express API with health checks
+- **`remix`** — Full-stack React Router v7 app cloned from `remix-pod-starter`
 
-`devops-agent-r2d2` · `devops-agent` · `infra-live`
+Production endpoint: `devops-agent-r2d2.johannmoreno.dev`
 
-</td>
-<td width="50%">
+### `infra-live` — GitOps Source of Truth
 
-#### 🏗️ Tajao Platform
-
-The foundation everything runs on. A design system, a production-ready Remix starter, backend templates, and a database agent — all standardized so every app ships with consistent quality.
-
-`tajao-design-system` · `remix-pod-starter` · `open-claw-generator` · `bbdd-agent`
-
-</td>
-</tr>
-</table>
-
----
-
-### Stack
-
-<div align="center">
-
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![Remix](https://img.shields.io/badge/Remix-000000?style=for-the-badge&logo=remix&logoColor=white)
-![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![Styled Components](https://img.shields.io/badge/Styled_Components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white)
-
-![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
-![ArgoCD](https://img.shields.io/badge/Argo_CD-EF7B4D?style=for-the-badge&logo=argo&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
-![Telegram Bot](https://img.shields.io/badge/Telegram_Bot-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)
-
-</div>
+All Kubernetes manifests live here. ArgoCD watches this repo — any commit triggers automatic deployment. Structured by environment (`staging/`, `production/`) with shared base resources.
 
 ---
 
-### Numbers
+## The Platform Layer
+
+The agents don't generate code from scratch every time. They build on top of standardized foundations:
+
+### `tajao-design-system`
+
+Production-grade React component library. Not a wrapper around MUI — built from primitives:
+
+- **vanilla-extract** — Zero-runtime CSS, fully type-safe tokens and themes
+- **Radix UI** — Accessible, unstyled primitives (Dialog, Popover, Select, etc.)
+- **CVA** — Class variance authority for composable component variants
+- **SSR-first** — No flash of unstyled content, works with React Router v7 streaming
+- **Agent-friendly** — Every export has JSDoc with `@example` blocks so AI agents can use it correctly
+
+### `remix-pod-starter`
+
+The template R2D2 clones for every `remix` deployment:
+
+- React Router v7 (Remix) with SSR
+- TypeScript strict mode
+- Tailwind CSS v4 + shadcn/ui components
+- i18n (i18next, `es`/`en` by default)
+- WCAG 2.1 AA accessibility defaults
+- Light/dark theme with CSS custom properties
+- Vitest + Testing Library
+- Docker multi-stage build → K8s ready
+
+### `open-claw-generator`
+
+API to deploy and manage dockerized OpenClaw instances on a remote VPS via SSH. Each instance is an autonomous Telegram bot with Whisper transcription. Runs as a K8s pod, persists state in SQLite on a PVC.
+
+### `bbdd-agent`
+
+Database management API — handles schema creation, migrations, and data access for apps that need persistence beyond the frontend.
+
+---
+
+## What gets shipped
+
+The output of the pipeline. These are the frontend applications — all TypeScript, all built in 2025–2026:
+
+| App | What it is | Stack |
+|-----|-----------|-------|
+| **Mente Digital** | Obsidian-like knowledge base with Telegram integration for capturing ideas on the go | `TypeScript` `React Router v7` `Telegram API` |
+| **Envite Canario** | Online multiplayer card game — the traditional Canarian "envite" with animations | `TypeScript` `React` `WebSockets` |
+| **Dive Computer** | Nitrox calculator and dive planning tool for scuba diving | `TypeScript` `React` |
+| **Healthy Habits** | Micro-exercise routine app with reminders and movement tracking | `TypeScript` `Remix` |
+| **OVNI Tenerife** | Interactive map of UFO sightings in Tenerife — report and explore | `TypeScript` `React` `Maps API` |
+| **Silbo Training** | Learn Silbo Gomero, the whistled language of the Canary Islands | `TypeScript` `React` `Web Audio` |
+| **Inventario Comida** | Home food inventory tracker with expiry alerts | `TypeScript` `Remix` |
+| **Inventario Ropa** | Wardrobe manager with categories and seasonal tracking | `TypeScript` `Remix` |
+| **Gestión Tareas Hogar** | Household chore management with assignment and scheduling | `TypeScript` `Remix` |
+| **Mama Fit** | Exercise routines with tagging, filtering, and progress tracking | `TypeScript` `React` |
+| **Juego de las Sillas** | Musical chairs game for kids with audio and animations | `TypeScript` `React` |
+| **App de Bienestar** | Office wellness — sends stretch/movement reminders throughout the day | `TypeScript` `Remix` |
+
+---
+
+## Stack
+
+**Frontend** — where I spend my time:
+
+`TypeScript` · `React` · `React Router v7 / Remix` · `vanilla-extract` · `Tailwind CSS` · `Radix UI` · `styled-components` · `Storybook` · `Vitest` · `Testing Library` · `GraphQL`
+
+**Platform** — what the agents manage:
+
+`Node.js` · `Express` · `Docker` · `Kubernetes` · `ArgoCD` · `GitHub Actions` · `GHCR` · `nginx`
+
+**AI/Agents** — the glue:
+
+`OpenAI API (GPT-4o)` · `Whisper` · `GitHub Copilot` · `Telegram Bot API` · `Server-Sent Events`
+
+---
 
 <div align="center">
-
-<img src="https://github-readme-stats.vercel.app/api?username=Johanson1988&show_icons=true&theme=github_dark&hide_border=true&bg_color=0d1117&title_color=1f6feb&icon_color=1f6feb&text_color=8b949e&ring_color=1f6feb" height="170"/>
-&nbsp;&nbsp;
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Johanson1988&layout=compact&theme=github_dark&hide_border=true&bg_color=0d1117&title_color=1f6feb&text_color=8b949e&langs_count=6" height="170"/>
-
+<sub>Based in the Canary Islands · Open to opportunities in Barcelona & Madrid</sub>
 <br/><br/>
-
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=Johanson1988&theme=github-dark-blue&hide_border=true&background=0d1117&ring=1f6feb&fire=1f6feb&currStreakLabel=1f6feb&sideLabels=8b949e&dates=8b949e" height="170"/>
-
+<a href="https://www.linkedin.com/in/johannmoreno"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white"/></a>
 </div>
-
----
-
-<div align="center">
-
-**163 repos** · **30+ apps shipped** · **1 human in the loop**
-
-<sub>Based in the Canary Islands 🇮🇨 · Open to opportunities in Barcelona & Madrid</sub>
-
-<br/>
-
-<a href="https://www.linkedin.com/in/johannmoreno"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"/></a>
-
-</div>
-
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,50:161b22,100:1f6feb&height=100&section=footer" width="100%"/>
